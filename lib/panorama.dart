@@ -493,6 +493,15 @@ class _PanoramaState extends State<Panorama>
     if (widget.sensorControl != oldWidget.sensorControl) {
       _updateSensorControl();
     }
+
+    // fixes lat/lon update - not sure if sensor works ok
+    if (widget.latitude != oldWidget.latitude ||
+        widget.longitude != oldWidget.longitude) {
+      latitudeRad = radians(widget.latitude);
+      longitudeRad = radians(widget.longitude);
+      _updateSensorControl();
+      _updateView(); // why we need another updateView?
+    }
   }
 
   @override
