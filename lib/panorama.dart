@@ -342,8 +342,12 @@ class _PanoramaState extends State<Panorama>
     if (provider == null) return;
     _imageStream?.removeListener(ImageStreamListener(_updateTexture));
     _imageStream = provider.resolve(ImageConfiguration());
-    ImageStreamListener listener = ImageStreamListener(_updateTexture);
-    _imageStream!.addListener(listener);
+
+    // we have to give Cube CustomPainter time to paint()
+    WidgetsBinding.instance.scheduleFrameCallback((_) async {
+      ImageStreamListener listener = ImageStreamListener(_updateTexture);
+      _imageStream!.addListener(listener);
+    });
   }
 
   void _onSceneCreated(Scene scene) {
